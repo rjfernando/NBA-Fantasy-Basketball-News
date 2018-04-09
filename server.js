@@ -2,10 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const request= require("request");
 
 //scraping tools 
-const axios = require("axios");
-const cheerio = require("cheerio");
+// const axios = require("axios");
+// const cheerio = require("cheerio");
 
 //requiring all models
 var db = require("./models")
@@ -38,10 +39,8 @@ const exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
 
-var router = require("./controllers/routes.js");
-
-router(app, db);
-
+var routeHandler = require("./controllers/routes");
+routeHandler(app, db);
 // starts the server
 app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");

@@ -1,19 +1,60 @@
-<div class ="container">
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4">NBA Fantasy BasketBall Player News</h1>
-    <p class="lead">Get updates on current players stats and progress</p>
-  </div>
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">NBA Fantasy BasketBall Player News</h1>
+            <p class="lead">Get updates on current player stats and progress</p>
+            <div class="container row">
+                <div class="col-md-8">   
+                </div>
+                <div class="col-md-2 text-right">
+                    <a class="btn btn-primary" href="/saved-article">Articles</a>
+                </div>
+                <div class="col-md-2">
+                    <form class="scrape-btn" method="POST" action="/scrape">
+                        <button type="submit" class="btn btn-primary">Scrape Articles</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{{#each article}}
+<div class="col-md-4 mb-5">
+    <div class="card" data-id="{{this._id}}">
+        <a href="{{this.link}}" target="_blank">
+            <img class="card-img-top" src="{{this.img}}" alt="Card image cap">
+        </a>
+        <div class="card-body">
+            <a href="{{this.link}}" target="_blank">
+                <h4 class="card-title">{{this.title}}</h4>
+            </a>
+            <p class="card-text">{{this.description}}</p>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn {{#if this.saved}} btn-success {{/if}} {{#unless this.saved}} btn-primary {{/unless}} saveBtn"
+                data-id="{{this._id}}">{{#if this.saved}} Saved {{/if}} {{#unless this.saved}} Save Comment {{/unless}}</button>
+        </div>
+    </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
+{{/each}} {{#each article}}
+<div class="col-md-4 mb-5 article-container">
+    <div class="card" data-id="{{this._id}}">
+        <div class="card-body">
+            <a href="{{this.link}}" target="_blank">
+                <h4 class="card-title">{{this.title}}</h4>
+            </a>
+            <p class="card-text">{{this.description}}</p>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-success commentBtn" data-id="{{this._id}}" data-toggle="modal" data-target="#myModal">Comment</button>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-danger deleteBtn" data-id="{{this._id}}">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
