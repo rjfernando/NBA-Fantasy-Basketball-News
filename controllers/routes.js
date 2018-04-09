@@ -26,13 +26,11 @@ module.exports = function (app, db) {
                         db.Recipe.findOne({
                             link: result.link
                         }).then(function (data) {
-                            // if article does not exist
                             if (!data) {
                                 // then creates a new article
                                 db.Article
                                     .create(result)
                                     .then(function (dbArticle) {
-                                        // sends a succesful message to the client
                                         res.send('Scrape Complete');
                                     })
                                     .catch(function (err) {
@@ -44,32 +42,27 @@ module.exports = function (app, db) {
 
                     }
                 });
-                // redirects to all articles
                 res.redirect('/');
             });
         });
         // Route for getting all Article from the db
         app.get('/', function (req, res) {
-            // grabs all of the Article
             db.Article
                 .find({})
                 .then(function (data) {
                     var result = {};
                     result.rarticle = data;
-                    // renders index.handlebars
                     res.render('index', result);
                 });
         });
 
         // Route for getting all the saved Article from the db
         app.get('/saved-article', function (req, res) {
-            // grabs all of the Article that are set to saved: true
             db.Article
                 .find({
                     saved: true
                 })
                 .then(function (data) {
-                    // console.log(data)
                     var result = {};
                     result.article = data;
                     res.render('my-article', result);
@@ -87,16 +80,13 @@ module.exports = function (app, db) {
                 // runs the populate method with "comments",
                 .populate('comment')
                 .then(function (data) {
-                    // then responds with the article with the comments included
                     res.json(data)
                 })
         });
 
         // Route for saving/updating a Articles associated comments
         app.post('/article/:id', function (req, res) {
-            // grabs the specific article by id
             var articleId = req.params.id;
-            // saves the new review that gets posted to the Comment collection
             db.Comment
                 .create(req.body)
                 .then(function (dbComment) {
@@ -119,9 +109,7 @@ module.exports = function (app, db) {
 
         // Route for updating saved prop. for a specific Article
         app.put('/article/:id', function (req, res) {
-            // grabs the specific Article by id
             var articleId = req.params.id;
-            // updates the Article saved to true
             db.Article
                 .findOneAndUpdate({
                     _id: articleId
@@ -138,7 +126,6 @@ module.exports = function (app, db) {
         app.put('/articles/delete/:id', function (req, res) {
             // grabs the specific Article by id
             var articleId = req.params.id;
-            // updates the Article saved to false
             db.Article
                 .findOneAndUpdate({
                     _id: articleId
@@ -153,9 +140,7 @@ module.exports = function (app, db) {
 
         // Route for deleting a comment specific to a Artcile
         app.delete('/comment/delete/:id', function (req, res) {
-            // grabs the specific comment by id
             var commentId = req.params.id;
-            // removes it from the Comment Collecition
             db.Comment
                 .findOneAndRemove({
                     _id: commentId

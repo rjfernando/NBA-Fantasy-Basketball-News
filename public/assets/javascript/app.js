@@ -4,7 +4,6 @@ $(document).on('click', '.saveBtn', function () {
     var articleId = $(this).attr('data-id');
     var btn = $(this);
 
-    // sends a PUT request to save the article
     $.ajax({
         method: 'PUT',
         url: '/article/' + articleId
@@ -18,17 +17,14 @@ $(document).on('click', '.saveBtn', function () {
 
 // when clicking on Delete Article btn deletes saved article
 $(document).on('click', '.deleteBtn', function () {
-    // grabs the id associated with the article from the delete button
     var articleId = $(this).attr('data-id');
     var btn = $(this);
 
-    // sends a PUT request to delete the saved article
     $.ajax({
         method: 'PUT',
         url: '/article/delete/' + articleId
     }).done(function (data) {
         console.log('Article Removed!')
-        // removes the whole article container
         btn.closest('.article-container').remove();
     })
 
@@ -36,9 +32,7 @@ $(document).on('click', '.deleteBtn', function () {
 
 // when clicking on comment btn the review modal pops up with the list of comments
 $(document).on('click', '.commentBtn', function () {
-    // grabs the id associated with the article from the comment button
     var articleId = $(this).attr('data-id');
-    // makes an ajax call for the Article
     $.ajax({
         method: 'GET',
         url: '/article/' + articleId
@@ -49,7 +43,6 @@ $(document).on('click', '.commentBtn', function () {
             $('#commentTitle').text(data.title);
             $('#saveComment').attr('data-id', data._id);
             $('#comment').empty();
-            // gets all comments for one article
             for (var i = 0; i < data.reviews.length; i++) {
                 $('#comment').append(`<li class='list-group-item d-flex justify-content-between align-items-center'>` +
                     `${data.reviews[i].body}<a href='#' class='badge badge-pill badge-danger delete-comment' data-id='` +
@@ -61,14 +54,11 @@ $(document).on('click', '.commentBtn', function () {
 
 // when clicking the Submit Comment button
 $(document).on('click', '#saveComment', function () {
-    // grabs the id associated with the article from the submit button
     var articleId = $(this).attr('data-id');
-    // makes a POST request to add the comment, based on the input
     $.ajax({
         method: 'POST',
         url: '/article/' + articleId,
         data: {
-            // gets value from comment textarea
             body: $('#bodyinput').val()
         }
     })
@@ -90,14 +80,12 @@ $(document).on('click', '.delete-comment', function () {
     // grabs the id associated with the comment from the x button
     var commentId = $(this).attr('data-id');
     var btn = $(this);
-    // makes an ajax call to request deleting a comment 
     $.ajax({
         method: 'DELETE',
         url: '/comment/delete/' + commentId,
     })
         .done(function (data) {
             console.log(data, 'Comment is Deleted!');
-            // removes the review container
             btn.parent().remove();
         });
 })
