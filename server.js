@@ -18,7 +18,9 @@ var app = express();
 app.use(logger("dev"));
 
 //use body-parser for form submissions
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 //making "public" a static directory
 app.use(express.static("public"));
@@ -27,18 +29,20 @@ app.use(express.static("public"));
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/nbaFantasyBasketballNews";
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI, {
-    useMongoClient: true
+    // useMongoClient: true
 });
 
 //setting handlebars
 const exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
 
+var router = require("./controllers/routes.js");
 
-// Start the server
-app.listen(PORT, function() {
+router(app, db);
+
+// starts the server
+app.listen(PORT, function () {
     console.log("App running on port " + PORT + "!");
-  });
-  
+});
