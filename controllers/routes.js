@@ -23,7 +23,7 @@ module.exports = function (app, db) {
 
                     if (result.title && result.link && result.description && result.img) {
                         // create a new Article using the `result` object built from scraping
-                        db.Recipe.findOne({
+                        db.Article.findOne({
                             link: result.link
                         }).then(function (data) {
                             if (!data) {
