@@ -1,4 +1,4 @@
-# NBA-Fantasy-Basketball-News
+# NBA-Fantasy-Basketball-News (Scrape)
 
 # Overview
 
